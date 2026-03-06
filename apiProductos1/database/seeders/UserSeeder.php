@@ -12,6 +12,22 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        User::updateOrcreate(
+            ['email'=> 'admin@api.com'],
+            [
+                'name'=>'Administrador',
+                'password'=>Hash.make('password'),
+                'role'=> user.ROLE_ADMIN,
+            ]
+        );
+
+    User ::updateOrcreate(
+        ['email'=> 'Usuario@api.com'],
+        [
+            'name'=> 'Usuario consulta',
+            'password'=> Hash::make ('password'),
+            'role' => User::ROLE_USUARIO,
+        ]
+     );
     }
 }

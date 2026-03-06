@@ -3,22 +3,33 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\support\Fecades\Auth;
+use Tymon\JWTAuth\Fecades\JWTAuth;
+use Illuminate\support\frecades\Validator;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function Login(Request $request)
     {
-        $credenciales = $request->only('email', 'password');
+        $validador = Validator::make ($request -> all(),[
+            'email' => 'require|email',
+            'passaword'=> 'required',
+        ]);
+        if($validador ->fails()){
+            return response()->json(['errors'=> $validador -> errors()],422);
+        }
+        $credentials = $request->only('email', 'password');
 
-        if (!$token = auth()->attempt($credenciales)) {
+        if (!$token = JWTAuth::attempt($credenciales)) {
             return response()->json([
-                'error' => 'Credenciales incorrectas'
+                'message' => 'Credenciales incorrectas'
             ], 401);
         }
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer'
+            'message' => 'Login correcto',
+            'token' => $token,
+            'user'=>auth('api')-> user(),
         ]);
     }
 

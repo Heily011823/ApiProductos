@@ -41,4 +41,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return ['role'=> $this->role];
     }
+    public function isAdmin():bool{
+        return $this ->role === self::ROLE_ADMIN;
+    }
 }
